@@ -1,0 +1,1 @@
+ALTER TABLE "categoria" ADD CONSTRAINT "categoria_nome_unique" UNIQUE("nome");
