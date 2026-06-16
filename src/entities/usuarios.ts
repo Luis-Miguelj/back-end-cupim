@@ -9,8 +9,7 @@ interface User {
   id: number
   nome: string
   email: string
-  senha: string
-  admin?: boolean | null
+  endereco: string | null
 }
 
 
@@ -92,7 +91,12 @@ export class Users {
   }
 
   async listarUsuarios() {
-    const usuarios: User[] = await db.select().from(users)
+    const usuarios: User[] = await db.select({
+      id: users.id,
+      nome: users.nome,
+      email: users.email,
+      endereco: users.endereco || 'Nenhum endereço cadastrado.'
+    }).from(users)
 
     if (!usuarios) {
       return {
@@ -117,7 +121,7 @@ export class Users {
     const [user] = await db.
       select()
       .from(users)
-      .where(eq(users.email, email))
+      .where(eq(users.email, email.toLowerCase()))
 
     if (!user) {
       return {

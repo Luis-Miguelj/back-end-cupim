@@ -28,7 +28,7 @@ export const login = async (c: Context) => {
 
   const access = await PayloadJwt({
     id: usuario.id,
-    email: usuario.email,
+    email: usuario.email.toLowerCase(),
     role
   })
 

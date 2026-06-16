@@ -4,11 +4,17 @@ import { Hono } from 'hono'
 import { listarUsuarios } from '@/endpoints/lista-usuarios'
 import { cadastroUsuario } from '@/endpoints/cadastro-usuarios'
 import { atualizarUsuario } from '@/endpoints/atualizar-usuarios'
+import { atualizarCategoria } from '@/endpoints/atualizar-categoria'
 import { criarCategoria } from '@/endpoints/cadastro-categorias'
 import { login } from '@/endpoints/login'
+import { zValidator } from '@hono/zod-validator'
 
 //JWT
 import { jwt, type JwtVariables } from 'hono/jwt'
+import { listaProdutos } from './endpoints/lista-produtos'
+import { cadastroProduto } from './endpoints/cadastro-produto'
+import z from 'zod'
+import { createPedidoSchema } from './utils/type'
 
 const app = new Hono<{ Variables: JwtVariables }>()
 
@@ -22,6 +28,18 @@ app.use(
 )
 
 app.onError((err, c) => {
+  // if (err instanceof z.ZodError) {
+  //   return c.json(
+  //     {
+  //       success: false,
+  //       errors: err.errors.map((e) => ({
+  //         field: e.path.join('.'),
+  //         message: e.message,
+  //       })),
+  //     },
+  //     400
+  //   )
+  // }
   console.log(err)
 
   return c.json({
@@ -30,10 +48,15 @@ app.onError((err, c) => {
 })
 
 //Endpoints
-app.get('/api/get-users', listarUsuarios)
-app.post('/register', cadastroUsuario)
-app.put('/update-user/:id', atualizarUsuario)
+app.get('/api/listar-usuarios', listarUsuarios)
+app.get('/produtos', listaProdutos)
+app.get('/produtos/:id', listaProdutos)
+app.post('/api/cadastro-produto', cadastroProduto)
+app.post('/cadastro', cadastroUsuario)
+app.put('/atualizar-usuario/:id', atualizarUsuario)
 app.post('/login', login)
-app.post('/api/create-category', criarCategoria)
+app.post('/api/criar-categoria', criarCategoria)
+app.post('/criar-pedido', criarCategoria)
+app.put('/teste', atualizarCategoria)
 
 export default app
