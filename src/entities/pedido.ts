@@ -2,6 +2,7 @@ import { db } from '@/db'
 import { pedido } from '@/db/schema'
 import { createPedidoSchema, type CreatePedidoSchema } from '@/utils/type'
 import { eq, or } from 'drizzle-orm'
+import z from 'zod'
 
 export class Pedidos {
   async criarPedido(data: CreatePedidoSchema) {
@@ -74,6 +75,37 @@ export class Pedidos {
   }
 
 
-  async editarPedido() { }
+  async editarPedido(data: { id: number, valorTotal: number, status: string, dataPedido: Date }) {
+    const editarPedidoSchema = z.object({
+      id: z.number(),
+      valorTotal: z.number(),
+      status: z.string().min(1, {
+        error: "Campo status é obrigatório."
+      }),
+      dataPedido: z.date()
+    })
+
+    const { id, valorTotal, status, dataPedido } = editarPedidoSchema.parse(data)
+
+    const editar = await db.update(pedido).set({
+      status,
+      dataPedido: dataPedido.toISOString(),
+      valorTotal
+    }).where(eq(pedido.id, id))
+
+    if (!editar) {
+      return {
+        error: "Erro ao editar o pedido.",
+        message: null
+      }
+    }
+
+
+    return {
+      error: null,
+      message: "Pedido editado com sucesso."
+    }
+
+  }
   async deletarPedido() { }
 }
