@@ -34,14 +34,14 @@ export class Carrinho {
     }
   }
 
-  async editarCarrinho(id: number, status: string): Promise<string> {
-    if (!id) {
+  async editarCarrinho(idCarrinho: number, status: string): Promise<string> {
+    if (!idCarrinho) {
       return "Id não informado."
     }
 
     const [editarCarrinho] = await db.update(carrinho).set({
       status: !status || status === "" ? 'Em processo' : status
-    }).returning()
+    }).where(eq(carrinho.id, idCarrinho)).returning()
 
     if (!editarCarrinho) {
       return "Não foi possível editar o status do carrinho."

@@ -86,7 +86,26 @@ export class Produto {
 
   }
 
-  async editarProduto() { }
-  async deletarProduto() { }
+  async editarProduto(idProduto: number, data: ProdutoSchema): Promise<string> {
+    if (!idProduto) {
+      return "Id do produto não informado."
+    }
+
+    if (!data) {
+      return "Erro, dados não informados corretamente."
+    }
+
+    const [editarProduto] = await db.update(produto).set({ ...data }).where(eq(produto.id, idProduto)).returning()
+
+    if (!editarProduto) return "Erro ao editar o produto"
+
+    return "Produto editado com sucesso."
+
+  }
+
+  async deletarProduto(idProduto: number): Promise<string> {
+    await db.delete(produto).where(eq(produto.id, idProduto))
+    return "Produto deletado com sucesso."
+  }
 
 }
