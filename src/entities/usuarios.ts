@@ -60,9 +60,16 @@ export class Users {
       }
     }
 
-    if (!nome || !email || !senha || !endereco && admin == false) {
+    if ((!nome || !email || !senha || !endereco) && admin === false) {
       return {
         error: "Um dos campos (nome, email, senha, endereço) não foi preenchido corretamente.",
+        message: null
+      }
+    }
+
+    if (!senha || senha.length < 6) {
+      return {
+        error: "A senha deve conter no mínimo 6 caracteres.",
         message: null
       }
     }
@@ -74,9 +81,9 @@ export class Users {
       email,
       senha: hashPassword,
       endereco
-    }).where(eq(users.id, id))
+    }).where(eq(users.id, id)).returning()
 
-    if (!update) {
+    if (update.length == 0) {
       return {
         error: "Não foi possível atualizar o usuário.",
         message: null

@@ -37,5 +37,28 @@ export const createPedidoSchema = z.object({
   idUsuario: z.number().int().optional(),
 });
 
+export const imagemSchema = z.object({
+  id: z.number().int().positive().optional(),
+  urlImagem: z.string().url().nullable().optional(),
+  descricaoAlt: z.string().min(1),
+  ordem: z.number().int().nonnegative(),
+  idProduto: z.number().int().positive().nullable().optional(),
+});
+
+export const carrinhoSchema = z.object({
+  idUsuario: z.number().int().positive().nullable().optional(),
+  status: z.string().max(200).default('Em processo'),
+})
+
+export const listaCarrinhoSchema = z.object({
+  id: z.number().int().positive().optional(),
+  dataCriacao: z.string().nullable().optional(),
+  idUsuario: z.number().int().positive().nullable().optional(),
+  status: z.string().max(200).optional().default('Em processo'),
+})
+
+export type ListaCarrinhoSchame = z.infer<typeof listaCarrinhoSchema>
+export type Carrinho = z.infer<typeof carrinhoSchema>
+export type Imagem = z.infer<typeof imagemSchema>
 export type ProdutoSchema = z.infer<typeof produtoSchema>
-export type CreatePedidoSchema = z.infer<typeof createPedidoSchema>;
+export type CreatePedidoSchema = z.infer<typeof createPedidoSchema>

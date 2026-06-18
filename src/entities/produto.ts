@@ -86,4 +86,7 @@ export class Produto {
 
   }
 
+  async editarProduto() { }
+  async deletarProduto() { }
+
 }

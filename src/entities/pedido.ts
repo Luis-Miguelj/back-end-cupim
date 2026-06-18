@@ -100,12 +100,34 @@ export class Pedidos {
       }
     }
 
-
     return {
       error: null,
       message: "Pedido editado com sucesso."
     }
 
   }
-  async deletarPedido() { }
+
+  async deletarPedido(id: number) {
+    if (id) {
+      return {
+        error: "Id não informado.",
+        message: null
+      }
+    }
+
+    const deletarPedido = await db.delete(pedido).where(eq(pedido.id, id))
+
+    if (!deletarPedido) {
+      return {
+        error: "Erro ao deletar pedido.",
+        message: null
+      }
+    }
+
+    return {
+      error: null,
+      message: "Pedido deletado com sucesso."
+    }
+
+  }
 }
