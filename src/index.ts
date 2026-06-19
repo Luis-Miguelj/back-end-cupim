@@ -12,13 +12,19 @@ import { cadastroProduto } from '@/endpoints/cadastro-produto'
 import { salvarImagem } from '@/endpoints/salvar-imagem'
 import { buscarImagens } from '@/endpoints/buscar-imagens'
 import { criarPedido } from '@/endpoints/criar-pedido'
-
-import { zValidator } from '@hono/zod-validator'
+import { adicionarItemCarrinho } from '@/endpoints/adicionar-item-carrinho'
+import { listarItensCarrinho } from '@/endpoints/listar-itens-carrinho'
+import { atualizarItemCarrinho } from '@/endpoints/atualizar-item-carrinho'
+import { deletarItemCarrinho } from '@/endpoints/deletar-item-carrinho'
+import { adicionarItemPedido } from '@/endpoints/adicionar-item-pedido'
+import { listarItensPedido } from '@/endpoints/listar-itens-pedido'
+import { deletarItemPedido } from '@/endpoints/deletar-item-pedido'
 
 //JWT
-import { jwt, type JwtVariables } from 'hono/jwt'
+import { jwt } from 'hono/jwt'
 
 import { serveStatic } from 'hono/bun'
+import { ZodError } from 'zod'
 
 const app = new Hono()
 
@@ -32,7 +38,17 @@ app.use(
 )
 
 app.onError((err, c) => {
-  console.log(err)
+  if (err instanceof ZodError) {
+    return c.json({
+      error: "Dados enviados invalidos.",
+      details: err.issues.map((issue) => ({
+        field: issue.path.join('.'),
+        message: issue.message,
+      })),
+    }, 400)
+  }
+
+  console.error(err)
 
   return c.json({
     error: "Erro interno do servidor.",
@@ -46,11 +62,18 @@ app.get('/produtos/:id', listaProdutos)
 app.get('/api/buscar-imagens/:id', buscarImagens)
 app.post('/api/cadastro-produto', cadastroProduto)
 app.post('/cadastro', cadastroUsuario)
-app.put('/atualizar-usuario/:id', atualizarUsuario)
+app.put('/api/atualizar-usuario/:id', atualizarUsuario)
 app.post('/login', login)
 app.post('/api/criar-categoria', criarCategoria)
 app.post('/api/produtos/:id/imagens', salvarImagem)
-app.post('/criar-pedido', criarPedido)
-app.put('/teste', atualizarCategoria)
+app.post('/api/criar-pedido', criarPedido)
+app.post('/api/item-carrinho', adicionarItemCarrinho)
+app.get('/api/item-carrinho/:idCarrinho', listarItensCarrinho)
+app.put('/api/item-carrinho/:id', atualizarItemCarrinho)
+app.delete('/api/item-carrinho/:id', deletarItemCarrinho)
+app.post('/api/item-pedido', adicionarItemPedido)
+app.get('/api/item-pedido/:idPedido', listarItensPedido)
+app.delete('/api/item-pedido/:id', deletarItemPedido)
+app.put('/api/atualizar-categoria/:id', atualizarCategoria)
 
 export default app

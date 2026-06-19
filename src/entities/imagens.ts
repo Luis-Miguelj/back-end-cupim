@@ -16,7 +16,7 @@ export class Imagens {
     return ultimaImagem ? ultimaImagem.ordem + 1 : 1
   }
 
-  async salvarImagem({ id, urlImagem, descricaoAlt, ordem, idProduto }: { id?: number, urlImagem: string, descricaoAlt: string, ordem: number, idProduto: number }) {
+  async salvarImagem({ urlImagem, descricaoAlt, ordem, idProduto }: { id?: number, urlImagem: string, descricaoAlt: string, ordem: number, idProduto: number }) {
 
     if (!idProduto || !urlImagem || !descricaoAlt) {
       return {
@@ -54,4 +54,5 @@ export class Imagens {
 
     return imagens
   }
+
 }

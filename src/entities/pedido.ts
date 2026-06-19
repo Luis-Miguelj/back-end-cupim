@@ -108,7 +108,7 @@ export class Pedidos {
   }
 
   async deletarPedido(id: number) {
-    if (id) {
+    if (!id) {
       return {
         error: "Id não informado.",
         message: null

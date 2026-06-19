@@ -6,6 +6,9 @@
     "types": [
       "bun"
     ],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": [
         "./src/*"

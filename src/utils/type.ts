@@ -57,8 +57,27 @@ export const listaCarrinhoSchema = z.object({
   status: z.string().max(200).optional().default('Em processo'),
 })
 
+export const itemCarrinhoSchema = z.object({
+  idCarrinho: z.number().int().positive("Id do carrinho é obrigatório"),
+  idProduto: z.number().int().positive("Id do produto é obrigatório"),
+  quantidade: z.number().int().positive("Quantidade deve ser maior que zero"),
+})
+
+export const editarItemCarrinhoSchema = z.object({
+  quantidade: z.number().int().positive("Quantidade deve ser maior que zero"),
+})
+
+export const itemPedidoSchema = z.object({
+  idPedido: z.number().int().positive("Id do pedido é obrigatório"),
+  idProduto: z.number().int().positive("Id do produto é obrigatório"),
+  quantidade: z.number().int().positive("Quantidade deve ser maior que zero"),
+})
+
 export type ListaCarrinhoSchame = z.infer<typeof listaCarrinhoSchema>
 export type Carrinho = z.infer<typeof carrinhoSchema>
 export type Imagem = z.infer<typeof imagemSchema>
 export type ProdutoSchema = z.infer<typeof produtoSchema>
 export type CreatePedidoSchema = z.infer<typeof createPedidoSchema>
+export type ItemCarrinhoSchema = z.infer<typeof itemCarrinhoSchema>
+export type EditarItemCarrinhoSchema = z.infer<typeof editarItemCarrinhoSchema>
+export type ItemPedidoSchema = z.infer<typeof itemPedidoSchema>
