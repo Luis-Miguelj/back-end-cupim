@@ -25,6 +25,7 @@ import { jwt } from 'hono/jwt'
 
 import { serveStatic } from 'hono/bun'
 import { ZodError } from 'zod'
+import { cors } from 'hono/cors'
 
 const app = new Hono()
 
@@ -36,6 +37,12 @@ app.use(
     alg: 'HS256',
   }),
 )
+
+app.use('*', cors({
+  origin: '*',
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+}))
 
 app.onError((err, c) => {
   if (err instanceof ZodError) {
@@ -76,4 +83,8 @@ app.get('/api/item-pedido/:idPedido', listarItensPedido)
 app.delete('/api/item-pedido/:id', deletarItemPedido)
 app.put('/api/atualizar-categoria/:id', atualizarCategoria)
 
-export default app
+
+export default {
+  port: 3333,
+  fetch: app.fetch
+}
