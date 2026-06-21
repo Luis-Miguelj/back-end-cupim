@@ -26,6 +26,7 @@ import { jwt } from 'hono/jwt'
 import { serveStatic } from 'hono/bun'
 import { ZodError } from 'zod'
 import { cors } from 'hono/cors'
+import { atualizarProduto } from './endpoints/atualizar-produto'
 
 const app = new Hono()
 
@@ -82,6 +83,7 @@ app.post('/api/item-pedido', adicionarItemPedido)
 app.get('/api/item-pedido/:idPedido', listarItensPedido)
 app.delete('/api/item-pedido/:id', deletarItemPedido)
 app.put('/api/atualizar-categoria/:id', atualizarCategoria)
+app.put('/api/atulizar-produto/:id', atualizarProduto)
 
 
 export default {
