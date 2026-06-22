@@ -43,6 +43,7 @@ app.use('*', cors({
   origin: ['*', "https://cupim-front.vercel.app", "https://cupim-front.vercel.app/*"],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 }))
 
 app.onError((err, c) => {
