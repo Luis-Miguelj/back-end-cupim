@@ -42,6 +42,7 @@ export const login = async (c: Context) => {
 
   return c.json({
     token: access.token,
-    message: access.message
+    message: access.message,
+    role
   })
 }
