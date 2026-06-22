@@ -17,7 +17,7 @@ export const produto = pgTable("produto", {
   estoque: integer().notNull(),
   tipoMadeira: varchar("tipo_madeira", { length: 100 }).notNull(),
   acabamento: varchar({ length: 100 }).notNull(),
-  idCategoria: integer("id_categoria").notNull().references(() => categoria.id)
+  idCategoria: integer("id_categoria").notNull().references(() => categoria.id, { onDelete: 'cascade' })
 })
 
 export const categoria = pgTable("categoria", {
@@ -38,7 +38,7 @@ export const itensCarrinho = pgTable("itens_carrinho", {
   precoUnitario: doublePrecision("preco_unitario").notNull(),
   subTotal: doublePrecision("sub_total").notNull(),
   idCarrinho: integer("id_carrinho").references(() => carrinho.id),
-  idProduto: integer("id_produto").references(() => produto.id)
+  idProduto: integer("id_produto").references(() => produto.id, { onDelete: 'cascade' })
 })
 
 export const pedido = pgTable("pedido", {
@@ -46,7 +46,7 @@ export const pedido = pgTable("pedido", {
   dataPedido: date("data_pedido").$default(() => new Date().toISOString()),
   valorTotal: doublePrecision("valor_total").notNull(),
   status: varchar({ length: 200 }).notNull().$default(() => 'Em processo'),
-  idUsuario: integer("id_usuario").references(() => users.id)
+  idUsuario: integer("id_usuario").references(() => users.id, { onDelete: 'cascade' })
 })
 
 export const itemPedido = pgTable("item_pedido", {
@@ -54,8 +54,8 @@ export const itemPedido = pgTable("item_pedido", {
   quantidade: integer().notNull(),
   precoUnitario: doublePrecision("preco_unitario").notNull(),
   subTotal: doublePrecision("sub_total").notNull(),
-  idPedido: integer("id_pedido").references(() => pedido.id),
-  idProduto: integer("id_produto").references(() => produto.id)
+  idPedido: integer("id_pedido").references(() => pedido.id, { onDelete: 'cascade' }),
+  idProduto: integer("id_produto").references(() => produto.id, { onDelete: 'cascade' })
 })
 
 export const imagem = pgTable("imagem", {
@@ -63,5 +63,5 @@ export const imagem = pgTable("imagem", {
   urlImagem: text("url_imagem"),
   descricaoAlt: varchar("descricao_alt").notNull(),
   ordem: integer().notNull(),
-  idProduto: integer().references(() => produto.id)
+  idProduto: integer().references(() => produto.id, { onDelete: 'cascade' })
 })
