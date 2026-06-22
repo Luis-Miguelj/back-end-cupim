@@ -30,6 +30,14 @@ import { atualizarProduto } from './endpoints/atualizar-produto'
 
 const app = new Hono()
 
+
+app.use('*', cors({
+  origin: ['*'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}))
+
 //Middleware
 app.use(
   '/api/*',
@@ -39,12 +47,7 @@ app.use(
   }),
 )
 
-app.use('*', cors({
-  origin: ['*', "https://cupim-front.vercel.app", "https://cupim-front.vercel.app/*"],
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}))
+
 
 app.onError((err, c) => {
   if (err instanceof ZodError) {
