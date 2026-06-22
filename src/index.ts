@@ -40,7 +40,7 @@ app.use(
 )
 
 app.use('*', cors({
-  origin: '*',
+  origin: ['*', "https://cupim-front.vercel.app", "https://cupim-front.vercel.app/*"],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
 }))
