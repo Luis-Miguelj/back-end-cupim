@@ -27,6 +27,7 @@ import { serveStatic } from 'hono/bun'
 import { ZodError } from 'zod'
 import { cors } from 'hono/cors'
 import { atualizarProduto } from './endpoints/atualizar-produto'
+import { listarCategorias } from './endpoints/lista-categorias'
 
 const app = new Hono()
 
@@ -80,6 +81,7 @@ app.post('/api/produtos/:id/imagens', salvarImagem)
 app.post('/api/criar-pedido', criarPedido)
 app.post('/api/item-carrinho', adicionarItemCarrinho)
 app.get('/api/item-carrinho/:idCarrinho', listarItensCarrinho)
+app.get('/api/listar-categorias', listarCategorias)
 app.put('/api/item-carrinho/:id', atualizarItemCarrinho)
 app.delete('/api/item-carrinho/:id', deletarItemCarrinho)
 app.post('/api/item-pedido', adicionarItemPedido)
